@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../../Task';
 import { TaskItemComponent } from '../task-item/task-item.component';
+import { AddTaskComponent } from '../add-task/add-task.component'; 
 
 @Component({
   selector: 'app-tasks',
-  imports: [TaskItemComponent],
+  imports: [TaskItemComponent, AddTaskComponent],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css'
 })
@@ -20,4 +21,16 @@ export class TasksComponent {
     });
   }
 
+  deleteTask(task: Task | undefined) {
+    this.taskService.deleteTask(task).subscribe(() => {
+      this.tasks = this.tasks.filter(t => t.id !== task?.id);
+    });
+  }
+
+  toggleTask(task: Task | undefined) {
+      if (task) {
+        task.completed = !task.completed;
+        this.taskService.updateTask(task).subscribe();
+      }
+  }
 }

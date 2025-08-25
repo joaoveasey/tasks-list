@@ -14,4 +14,18 @@ export class TaskService {
   getTasks() : Observable<Task[]> {
     return this.http.get<Task[]>(this.apiUrl);
   }
+
+  deleteTask(task: Task | undefined) : Observable<Task> {
+    if (!task) {
+      throw new Error('Task is undefined');
+    }
+    return this.http.delete<Task>(`${this.apiUrl}/${task.id}`);
+  }
+
+  updateTask(task: Task | undefined) : Observable<Task> {
+    if (!task) {
+      throw new Error('Task is undefined');
+    }
+    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task);
+  }
 }
